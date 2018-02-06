@@ -9,7 +9,10 @@ var app = express(); // webapp
 var http = require('http').Server(app); // connects http library to server
 var io = require('socket.io')(http); // connect websocket library to server
 var serverPort = 8000;
-
+var tea;
+var ice;
+var sugar;
+var toppings;
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -30,7 +33,7 @@ io.on('connect', function(socket) {
   var questionNum = 0; // keep count of question, used for IF condition.
   socket.on('loaded', function(){// we wait until the client has loaded and contacted us that it is ready to go.
 
-  socket.emit('answer',"Hey, Hello I am \"___*-\" a simple chat bot example."); //We start with the introduction;
+  socket.emit('answer',"Hey, Hello I am \"bobabot\", feeling like drinking today?"); //We start with the introduction;
   setTimeout(timedQuestion, 2500, socket,"What is your Name?"); // Wait a moment and respond with a question.
 
 });
@@ -49,50 +52,64 @@ function bot(data,socket,questionNum) {
   var question;
   var waitTime;
 
+
 /// These are the main statments that make up the conversation.
   if (questionNum == 0) {
   answer= 'Hello ' + input + ' :-)';// output response
   waitTime =2000;
-  question = 'How old are you?';			    	// load next question
+  question = 'What kind of tea do you like?';			    	// load next question
   }
   else if (questionNum == 1) {
-  answer= 'Really ' + input + ' Years old? So that means you where born in: ' + (2018-parseInt(input));// output response
+  answer= 'Wow ' + input + '!, classy ' ;// output response
   waitTime =2000;
-  question = 'Where do you live?';			    	// load next question
+  question = 'How would you like your ice';			    	// load next question
+  tea = input.toLowerCase();
   }
   else if (questionNum == 2) {
-  answer= ' Cool! I have never been to ' + input+'.';
+  answer= ' gotcha, best for the temperature now isn\'t it? ';
   waitTime =2000;
-  question = 'Whats your favorite Color?';			    	// load next question
+  question = 'What about sugar? How much percentage?';			    	// load next question
+  ice = input.toLowerCase();
   }
   else if (questionNum == 3) {
-  answer= 'Ok, ' + input+' it is.';
-  socket.emit('changeBG',input.toLowerCase());
+  sugar = input.toLowerCase();
+  answer= 'Exactly ' + input+' percent for you!';
+  // socket.emit('changeBG',input.toLowerCase());
   waitTime = 2000;
-  question = 'Can you still read the font?';			    	// load next question
+  question = 'Do you like any toppings such as bubbles or jelly? ';			    	// load next question
   }
   else if (questionNum == 4) {
-    if(input.toLowerCase()==='yes'|| input===1){
-      answer = 'Perfect!';
+    toppings = input.toLowerCase();
+    if(input.toLowerCase()==='bubbles'|| input===1){
+      answer = 'Boba life, huh?';
       waitTime =2000;
-      question = 'Whats your favorite place?';
+    }
+    else if(input.toLowerCase()==='jelly'|| input===1){
+        // socket.emit('changeFont','white'); /// we really should look up the inverse of what we said befor.
+        answer = 'Jelly boy'
+        question = '';
+        waitTime = 0;
     }
     else if(input.toLowerCase()==='no'|| input===0){
-        socket.emit('changeFont','white'); /// we really should look up the inverse of what we said befor.
-        answer='How about now?'
-        question='';
-        waitTime =0;
-        questionNum--; // Here we go back in the question number this can end up in a loop
-    }else{
-      answer=' I did not understand you. Can you please answer with simply with yes or no.'
+        answer = 'Are you kidding me? no topping? Fine'
+        question = '';
+        waitTime = 0;
+    }
+    else {
+      answer='We do not have this topping in store now, only bubbles and jelly are available.'
       question='';
+      waitTime =1000;
       questionNum--;
-      waitTime =0;
     }
   // load next question
   }
+  else if (questionNum == 5) {
+    answer= 'This is your ' + tea +', ' + ice + ', '+ sugar + ' percent sugar, with ' + toppings;
+    waitTime = 2000;
+    question = '';
+  }
   else{
-    answer= 'I have nothing more to say!';// output response
+    answer= 'Come next time!';// output response
     waitTime =0;
     question = '';
   }

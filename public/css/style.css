@@ -4,13 +4,13 @@
 }
 
 body {
-	background-color: #f0db4f;
+	background-color: #A1EAFB;
 }
 
 h1, p {
-	font-family: sans-serif;
+	font-family: 'Abril Fatface', cursive;
 	text-align: center;
-	color: #323330;
+	color: #FDFDFD;
 	font-size:  100px;
 }
 
@@ -29,7 +29,7 @@ p {
 input {
     background-color: #eee;
     border: none;
-    font-family: sans-serif;
+    font-family: 'Abril Fatface', cursive;
     color: #000;
     padding: 15px 32px;
     text-align: center;
